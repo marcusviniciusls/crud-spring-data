@@ -24,18 +24,19 @@ public class CrudFuncionarioService {
         this.unidadeTrabalhoRepository = unidadeTrabalhoRepository;
     }
 
-    public void inicial(Scanner scanner){
+    Scanner sc = new Scanner(System.in);
+    public void inicial(){
         System.out.println("Bem vindo ao cadastro de Funcionário! ");
         while(controleFluxo){
             System.out.println("Selecione as opções abaixo:");
             System.out.println("1.Cadastrar \n2.Atualizar \n3.Visualizar todos os Funcionários \n4.Deletar Por Id");
-            int opcao = scanner.nextInt();
+            int opcao = sc.nextInt();
             switch (opcao){
                 case 1:
-                    salvar(scanner);
+                    salvar();
                     break;
                 case 2:
-                    atualizar(scanner);
+                    atualizar();
                     break;
                 case 3:
                     visualizarTodosFuncionarios();
@@ -48,14 +49,13 @@ public class CrudFuncionarioService {
                     break;
             }
             System.out.println("Deseja continuar? \n 1.Sim \n 2.Não");
-            Integer desejaContinuar = scanner.nextInt();
+            Integer desejaContinuar = sc.nextInt();
             controleFluxo = (desejaContinuar == 1) ? true : false;
         }
 
     }
 
-    private void salvar(Scanner scanner){
-        Scanner sc = new Scanner(System.in);
+    private void salvar(){
         boolean controleFluxoSalvar = true;
         System.out.println("Bem vindo ao cadastro de Funcionário!");
         System.out.print("Digite o nome do Funcionário: ");
@@ -75,35 +75,47 @@ public class CrudFuncionarioService {
         //cargo.adicionarListaFuncionario(funcionario);
         System.out.println("Funcionário Cadastrado com Sucesso!");
     }
-    private void atualizar(Scanner scanner){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Digite o Id do ");
-        Integer id = scanner.nextInt();
-        Optional<Funcionario> funcionarioEncontrado = funcionarioRepository.findById(id);
+    private void atualizar(){
 
-        System.out.print("Digite o nome do Funcionário: ");
+
+        System.out.println("Digite o Id do Funcionário para atualizar");
+        Integer id = sc.nextInt();
+
+        System.out.print("Digite o novo nome do Funcionário: ");
         String nomeFuncionario = sc.nextLine();
+
         System.out.print("Digite o CPF: ");
         String cpf = sc.nextLine();
 
-        System.out.print("Digite o salário recebido: ");
+        System.out.print("Digite o salário Novo: ");
         double salario = sc.nextDouble();
 
+        System.out.print("Digite o Id do Cargo");
+        Integer idCargo = sc.nextInt();
 
-        cargoRepository.save(cargo);
+        Optional<Cargo> cargo = cargoRepository.findById(idCargo);
+
+        Funcionario funcionario = new Funcionario(nomeFuncionario,cpf,salario);
+        funcionario.setId(id);
+        funcionario.setCargo(cargo.get());
+
         funcionarioRepository.save(funcionario);
-        //cargo.adicionarListaFuncionario(funcionario);
         System.out.println("Funcionário Cadastrado com Sucesso!");
 
-        System.out.println(funcionarioEncontrado);
 
     }
     private void visualizarTodosFuncionarios(){
-        System.out.println("Método Vistualizar Todos os Funcionários");
+        Iterable<Funcionario> listaFuncionario = funcionarioRepository.findAll();
+        listaFuncionario.forEach(func -> System.out.println(func));
     }
 
     private void deletarPorId(){
-        System.out.println("Método Deletar Por Id");
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Digite o número do Id do Funcionário para a Exclusão: ");
+        Integer idFuncionarioExclusao = sc.nextInt();
+
+        funcionarioRepository.deleteById(idFuncionarioExclusao);
     }
 
 

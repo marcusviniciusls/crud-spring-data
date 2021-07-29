@@ -17,25 +17,25 @@ public class CrudCargoService {
         this.cargoRepository = cargoRepository;
     }
 
+    Scanner sc = new Scanner(System.in);
 
-
-    public void inicial(Scanner sc){
+    public void inicial(){
         System.out.println("Bem vindo ao cadastro de Cargos:");
         while(controleFluxoLacoRepeticao){
             System.out.println("0.Sair \n1.Cadastrar Cargo \n2.Atualizar Cargo \n3. Visualizar Todos o Cargos \n4.Deletar Cargo Por Id");
             int opcao = sc.nextInt();
             switch (opcao){
                 case 1:
-                    salvar(sc);
+                    salvar();
                     break;
                 case 2:
-                    atualizar(sc);
+                    atualizar();
                     break;
                 case 3:
                     visualizarTodosCargos();
                     break;
                 case 4:
-                    deletarPorId(sc);
+                    deletarPorId();
                     break;
                 default:
                     controleFluxoLacoRepeticao = false;
@@ -60,7 +60,7 @@ public class CrudCargoService {
 
     }
 
-    private void salvar(Scanner sc){
+    private void salvar(){
 
         System.out.println("Digite o nome do cargo");
         String nomeCargo = sc.next();
@@ -69,7 +69,7 @@ public class CrudCargoService {
         System.out.println("Cargo cadastrado com sucesso");
     }
 
-    private void atualizar(Scanner sc) {
+    private void atualizar() {
         System.out.println("Digite o número do ID que deseja recuperar: ");
         Integer idRecuperado = sc.nextInt();
         System.out.println("Digite o novo nome do cadastro");
@@ -88,9 +88,9 @@ public class CrudCargoService {
        cargos.forEach(cargo -> System.out.println(cargo));
     }
 
-    private void deletarPorId(Scanner scanner){
+    private void deletarPorId(){
         System.out.println("Digite o Id que deseja excluir do banco de dados");
-        Integer idParaDeletar = scanner.nextInt();
+        Integer idParaDeletar = sc.nextInt();
         cargoRepository.deleteById(idParaDeletar);
         System.out.println("Registro Deletado Com Sucesso");
     }
