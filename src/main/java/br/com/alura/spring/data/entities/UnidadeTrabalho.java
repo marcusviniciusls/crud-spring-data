@@ -21,8 +21,7 @@ public class UnidadeTrabalho {
     private String cidade;
     private String estado;
 
-    @ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "unidadetrabalho_funcionario", joinColumns ={@JoinColumn(name = "unidade_trabalho_id")})
+    @ManyToMany(mappedBy="unidadeTrabalhos", cascade = CascadeType.ALL)
     private List<Funcionario> listaFuncionarios = new ArrayList<>();
 
     // Métodos Gets
@@ -77,7 +76,11 @@ public class UnidadeTrabalho {
     }
 
     public void adicionarFuncionarioLista(Funcionario funcionario){
+        //funcionario.getUnidadeTrabalhos().add(this);
         listaFuncionarios.add(funcionario);
+    }
+    public List<Funcionario> getListaFuncionarios(){
+        return this.listaFuncionarios;
     }
 
     public List<Funcionario> getFuncionarios(){
@@ -99,4 +102,6 @@ public class UnidadeTrabalho {
                 ", listaFuncionarios=" + listaFuncionarios +
                 '}';
     }
+
+
 }

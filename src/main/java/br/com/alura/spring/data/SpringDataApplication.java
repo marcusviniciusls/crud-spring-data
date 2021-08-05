@@ -1,9 +1,11 @@
 package br.com.alura.spring.data;
 
+import br.com.alura.spring.data.exception.ValidacaoException;
 import br.com.alura.spring.data.services.CrudCargoService;
 import br.com.alura.spring.data.services.CrudFuncionarioService;
 import br.com.alura.spring.data.services.CrudUnidadeTrabalhoService;
 import br.com.alura.spring.data.services.RelatorioService;
+import org.postgresql.util.PSQLException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,7 +29,13 @@ public class SpringDataApplication implements CommandLineRunner {
 		this.relatorioService = relatorioService;
 	}
 	public static void main(String[] args) {
-		SpringApplication.run(SpringDataApplication.class, args);
+		try {
+			SpringApplication.run(SpringDataApplication.class, args);
+		}
+		catch (ValidacaoException e){
+			System.out.println("ERROR! " + e.getMessage());
+		}
+
 	}
 
 	@Override

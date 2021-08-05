@@ -28,8 +28,8 @@ public class Funcionario {
     @JoinColumn(name = "cargo_id", nullable = false)
     public Cargo cargo;
 
-    @Fetch(FetchMode.SELECT)
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "funcionarios_unidades", joinColumns = {
             @JoinColumn(name = "fk_funcionario") },
             inverseJoinColumns = { @JoinColumn(name = "fk_unidade") })
@@ -88,7 +88,7 @@ public class Funcionario {
                 '}';
     }
 
-    // Métodos Sets
+    // Métodos Sets e gets
 
 
     public void setNome(String nome) {
@@ -109,5 +109,15 @@ public class Funcionario {
 
     public void setCargo(Cargo cargo) {
         this.cargo = cargo;
+    }
+
+    // Método para adicionar as unidades de trabalhos com funcionário
+
+    public void adicionarListaUnidadeTrabalho(UnidadeTrabalho unidadeTrabalho){
+        this.unidadeTrabalhos.add(unidadeTrabalho);
+    }
+
+    public List<UnidadeTrabalho> getUnidadeTrabalhos(){
+        return this.unidadeTrabalhos;
     }
 }

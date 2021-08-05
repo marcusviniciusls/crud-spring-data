@@ -4,11 +4,13 @@ package br.com.alura.spring.data.services;
 import br.com.alura.spring.data.entities.Cargo;
 import br.com.alura.spring.data.entities.Funcionario;
 import br.com.alura.spring.data.entities.UnidadeTrabalho;
+import br.com.alura.spring.data.exception.NullSalvarBanco;
 import br.com.alura.spring.data.repository.CargoRepository;
 import br.com.alura.spring.data.repository.FuncionarioRepository;
 import br.com.alura.spring.data.repository.UnidadeTrabalhoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Scanner;
 
 @Service
@@ -58,6 +60,11 @@ public class CrudUnidadeTrabalhoService {
     }
 
     public void salvar(){
+
+        // Criar objetos
+        Cargo cargo = null;
+        Funcionario[] funcionario = null;
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Bem Vindo ao cadastro de Unidade de Trabalho");
 
@@ -67,10 +74,8 @@ public class CrudUnidadeTrabalhoService {
         System.out.print("Digite o Endereço: ");
         String endereco = scanner.nextLine();
 
-
-        System.out.println("Caso tenha Complemento: ");
+        System.out.print("Caso tenha Complemento: ");
         String complemento = scanner.nextLine();
-
 
         System.out.print("Digite o Bairro: ");
         String bairro = scanner.nextLine();
@@ -86,20 +91,20 @@ public class CrudUnidadeTrabalhoService {
 
         System.out.print("Digite o número da Residencia: ");
         int numero = scanner.nextInt();
+        scanner.nextLine();
 
         UnidadeTrabalho unidadeTrabalho =  new UnidadeTrabalho(descricao,endereco,numero,complemento,bairro,cep,cidade,estado);
 
         System.out.println("Funcionarios: ");
         System.out.print("Digite a quantidade de funcionarios que será cadastrado: ");
         int qtdFuncionariosParaCadastrar = scanner.nextInt();
-
-
+        scanner.nextLine();
 
 
         for(int i = 0; i < qtdFuncionariosParaCadastrar; i++){
-            System.out.println("Digite o salário do Funcionário: ");
+            System.out.print("Digite o salário do Funcionário: ");
             double salarioFuncionario = scanner.nextDouble();
-
+            scanner.nextLine();
 
             System.out.print("Digite o nome do Funcionário: ");
             String nomeFuncionario = scanner.nextLine();
@@ -110,20 +115,35 @@ public class CrudUnidadeTrabalhoService {
             System.out.print("Digite o nome do Cargo: ");
             String nomeCargo = scanner.nextLine();
 
-
-            Cargo cargo = new Cargo(nomeCargo);
-            Funcionario funcionario = new Funcionario(nomeFuncionario,cpf,salarioFuncionario,cargo);
-
-
-
+            cargo = new Cargo(nomeCargo);
             cargoRepository.save(cargo);
-            funcionarioRepository.save(funcionario);
+            funcionario[i] = new Funcionario(nomeFuncionario,cpf,salarioFuncionario,cargo);
+            //funcionario[i].adicionarListaUnidadeTrabalho(unidadeTrabalho);
+            funcionarioRepository.save(funcionario[i]);
 
-            unidadeTrabalho.adicionarFuncionarioLista(funcionario);
+
+            unidadeTrabalho.adicionarFuncionarioLista(funcionario[i]);
+
         }
 
+        if (cargo == null || funcionario == null || unidadeTrabalho == null){
+            throw new NullSalvarBanco("ERROR: erro ao salvar no banco de dados.");
+        }
+
+        
+        unidadeTrabalhoRepository.save(unidadeTrabalho);
+
+        //System.out.println(funcionario.getUnidadeTrabalhos());
+        System.out.println("----------------------------------------");
+        System.out.println(unidadeTrabalho.getListaFuncionarios());
+        System.out.println("----------------------------------------");
+        System.out.println(cargo);
+        System.out.println("----------------------------------------");
+        System.out.println(funcionario);
+        System.out.println("----------------------------------------");
         System.out.println(unidadeTrabalho);
-        //unidadeTrabalhoRepository.saveAll()
+
+
         System.out.println("Salvo com Sucesso");
     }
     public void atualizar(){

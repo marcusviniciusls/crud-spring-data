@@ -47,4 +47,13 @@ public class Cargo {
     public void adicionarListaFuncionario(Funcionario funcionario){
         this.adicionarListaFuncionario(funcionario);
     }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Cargo(Integer id, String nome) {
+        this.id = id;
+        this.nome = nome;
+    }
 }
