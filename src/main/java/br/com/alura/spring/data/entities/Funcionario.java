@@ -1,14 +1,9 @@
 package br.com.alura.spring.data.entities;
 
-
-
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "funcionarios")
@@ -33,7 +28,7 @@ public class Funcionario {
     @JoinTable(name = "funcionarios_unidades", joinColumns = {
             @JoinColumn(name = "fk_funcionario") },
             inverseJoinColumns = { @JoinColumn(name = "fk_unidade") })
-    private List<UnidadeTrabalho> unidadeTrabalhos;
+    private List<UnidadeTrabalho> unidadeTrabalhos = new ArrayList<>();
 
 
 
@@ -114,6 +109,7 @@ public class Funcionario {
     // Método para adicionar as unidades de trabalhos com funcionário
 
     public void adicionarListaUnidadeTrabalho(UnidadeTrabalho unidadeTrabalho){
+        unidadeTrabalho.adicionarFuncionarioLista(this);
         this.unidadeTrabalhos.add(unidadeTrabalho);
     }
 

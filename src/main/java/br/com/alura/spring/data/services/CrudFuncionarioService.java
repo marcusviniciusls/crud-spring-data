@@ -6,9 +6,13 @@ import br.com.alura.spring.data.exception.ValidacaoException;
 import br.com.alura.spring.data.repository.CargoRepository;
 import br.com.alura.spring.data.repository.FuncionarioRepository;
 import br.com.alura.spring.data.repository.UnidadeTrabalhoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.xml.bind.ValidationException;
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -179,7 +183,15 @@ public class CrudFuncionarioService {
 
     }
     private void visualizarTodosFuncionarios(){
-        Iterable<Funcionario> listaFuncionario = funcionarioRepository.findAll();
+        System.out.print("Qual página você deseja visualizar? ");
+        Integer page = sc.nextInt();
+
+        PageRequest pageable = PageRequest.of(page,5, Sort.by(Sort.Direction.DESC, "salario"));
+        Page<Funcionario> listaFuncionario = funcionarioRepository.findAll(pageable);
+
+        System.out.println(listaFuncionario);
+        System.out.println("Página atual: " + listaFuncionario.getNumber());
+        System.out.println("Total de elemento: " + listaFuncionario.getTotalElements());
         listaFuncionario.forEach(func -> System.out.println(func));
     }
 

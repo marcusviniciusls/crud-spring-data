@@ -63,7 +63,6 @@ public class UnidadeTrabalho {
     }
 
     // Construtor
-
     public UnidadeTrabalho(String descricao, String endereco, Integer numero, String complemento, String bairro, String cep, String cidade, String estado) {
         this.descricao = descricao;
         this.endereco = endereco;
@@ -74,6 +73,20 @@ public class UnidadeTrabalho {
         this.cidade = cidade;
         this.estado = estado;
     }
+
+    public UnidadeTrabalho(Integer id, String descricao, String endereco, Integer numero, String complemento, String bairro, String cep, String cidade, String estado) {
+        this.id = id;
+        this.descricao = descricao;
+        this.endereco = endereco;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cep = cep;
+        this.cidade = cidade;
+        this.estado = estado;
+    }
+
+    public UnidadeTrabalho(){}
 
     public void adicionarFuncionarioLista(Funcionario funcionario){
         //funcionario.getUnidadeTrabalhos().add(this);
@@ -98,8 +111,7 @@ public class UnidadeTrabalho {
                 ", bairro='" + bairro + '\'' +
                 ", cep='" + cep + '\'' +
                 ", cidade='" + cidade + '\'' +
-                ", estado='" + estado + '\'' +
-                ", listaFuncionarios=" + listaFuncionarios +
+                ", estado='" + estado +
                 '}';
     }
 
